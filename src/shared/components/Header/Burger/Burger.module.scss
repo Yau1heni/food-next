@@ -1,0 +1,15 @@
+@use '@styles/mixins.scss' as *;
+@use '@styles/variables.scss' as *;
+
+.menuButton {
+  display: none;
+  padding: 8px;
+  font-size: $font-size-xl;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  @include tablet {
+    display: block;
+  }
+}
