@@ -1,29 +1,27 @@
 'use client';
 
 import styles from './Header.module.scss';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Container } from '@components/Container';
 import Text from '@components/Text';
-import { HeaderModal } from '@components/Header';
+import { Burger, HeaderModal } from '@components/Header';
 import Link from 'next/link';
 import LogoIcon from '@components/icons/LogoIcon';
 import { Navigation } from '@components/Navigation';
 import LikeIcon from '@components/icons/LikeIcon';
 import UserIcon from '@components/icons/UserIcon';
-import { Burger } from '@components/Header';
 import { routes } from '@config/routes';
 
 export const Header = () => {
-  /* const { pathname, search } = useLocation();*/
   const [open, setOpen] = useState(false);
 
-  const onOpen = () => {
+  const onOpen = useCallback(() => {
     setOpen(true);
-  };
+  }, []);
 
-  const onClose = () => {
+  const onClose = useCallback(() => {
     setOpen(false);
-  };
+  }, []);
 
   return (
     <header className={styles.header}>
@@ -32,12 +30,7 @@ export const Header = () => {
           <Burger onOpen={onOpen} />
           <HeaderModal open={open} onClose={onClose} />
           <div className={styles.navGroup}>
-            <Link
-              href={routes.main.mask}
-              /*state={{ from: pathname + search }}*/
-              className={styles.logo}
-              aria-label={'Food Client logo'}
-            >
+            <Link href={routes.main.mask} className={styles.logo} aria-label={'Food Client logo'}>
               <LogoIcon />
               <Text tag={'h1'} view={'p-20'} weight={'bold'}>
                 Food Client

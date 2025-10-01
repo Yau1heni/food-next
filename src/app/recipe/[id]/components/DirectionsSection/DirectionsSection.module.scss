@@ -1,0 +1,9 @@
+@use '@styles/variables.scss' as *;
+
+.directionsSection {
+  max-width: 737px;
+
+  .title {
+    margin-bottom: $space-xl;
+  }
+}

@@ -1,0 +1,12 @@
+@use '@styles/mixins.scss' as *;
+@use '@styles/variables.scss' as *;
+
+.recipeDescription {
+  padding: 36px;
+  background: rgba(181, 70, 15, 0.33);
+  border-radius: $border-radius;
+
+  @include tablet {
+    padding: 16px;
+  }
+}

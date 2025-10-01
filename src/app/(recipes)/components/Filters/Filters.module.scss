@@ -1,0 +1,54 @@
+@use '@styles/variables.scss' as *;
+@use '@styles/mixins.scss' as *;
+
+.filters {
+  display: flex;
+  flex-direction: column;
+
+  .search {
+    gap: 19px;
+    display: flex;
+    margin-bottom: $space-l;
+    align-items: center;
+  }
+
+  .filtersContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: $space-xl;
+
+    @include tablet {
+      flex-direction: column;
+      align-items: end;
+    }
+
+    @include mobile {
+      width: 100%;
+    }
+  }
+
+  .leftGroup {
+    display: flex;
+    gap: $space-l;
+    flex-wrap: wrap;
+    justify-content: end;
+
+    @include mobile {
+      width: 100%;
+    }
+  }
+
+  .vegetarian {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+  }
+
+  .dropdown {
+    width: 300px;
+
+    @include mobile {
+      width: 100%;
+    }
+  }
+}

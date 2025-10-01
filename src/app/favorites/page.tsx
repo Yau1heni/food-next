@@ -1,8 +1,14 @@
-'use client';
-import { observer } from 'mobx-react-lite';
+import { Container } from '@components/Container';
+import { PageTitle } from '@components/PageTitle';
+import { FavoritesList } from './components/FavoritesList';
 
-const FavoritesPage = () => {
-  return <div>FavoritesPage</div>;
+const Page = async () => {
+  return (
+    <Container>
+      <PageTitle title={'Favorites'} />
+      <FavoritesList />
+    </Container>
+  );
 };
 
-export default observer(FavoritesPage);
+export default Page;

@@ -1,15 +1,22 @@
-'use client';
-import { observer } from 'mobx-react-lite';
-import { use } from 'react';
+import { FC } from 'react';
+import { RecipePageStoreContextProvider } from '@/store/RecipeStore/RecipePageStoreProvider';
+import { RecipePage } from '@/app/recipe/[id]/RecipePage';
+import RecipeStore from '@/store/RecipeStore';
 
 type FavoritePageProps = {
   params: Promise<{ id: string }>;
 };
 
-const RecipePage = ({ params }: FavoritePageProps) => {
-  const { id } = use(params);
+const Page: FC<FavoritePageProps> = async (props) => {
+  const { id } = await props.params;
 
-  return <div>RecipePage {id}</div>;
+  const initData = await RecipeStore.getInitData(id);
+
+  return (
+    <RecipePageStoreContextProvider initData={initData}>
+      <RecipePage />
+    </RecipePageStoreContextProvider>
+  );
 };
 
-export default observer(RecipePage);
+export default Page;

@@ -1,0 +1,64 @@
+@use '@styles/variables.scss' as *;
+@use '@styles/mixins.scss' as *;
+
+.recipe {
+  position: relative;
+  overflow: hidden;
+
+  .backgroundImage {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 411px;
+    height: 428px;
+    background-image: url('/images/pattern.png');
+    background-size: cover;
+
+    @include mobile {
+      display: none;
+    }
+  }
+
+  &Container {
+    .recipeHeader {
+      display: flex;
+      align-items: center;
+      gap: $space-m;
+      margin-top: 35px;
+      position: relative;
+
+      @include tablet {
+        margin-top: 24px;
+      }
+
+      .goBack {
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    .stats {
+      display: flex;
+      align-items: center;
+
+      @include tablet {
+        flex-direction: column-reverse;
+        gap: $space-m;
+      }
+    }
+
+    .button {
+      margin-left: auto;
+
+      @include mobile {
+      }
+    }
+  }
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 64px);
+}

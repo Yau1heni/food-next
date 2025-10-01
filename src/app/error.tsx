@@ -1,13 +1,12 @@
-'use client'; // Error boundaries must be Client Components
+'use client';
+
+import Button from '@components/Button';
+import { Error } from '@components/Error/Error';
 
 export default function GlobalError({ reset }: { reset: () => void }) {
   return (
-    <html>
-      <body>
-        <h2>Что-то пошло не так!</h2>
-        <p>Произошла глобальная ошибка</p>
-        <button onClick={() => reset()}>Попробовать снова</button>
-      </body>
-    </html>
+    <Error title={'Something went wrong!'} descriptions={'A global error occurred'}>
+      <Button onClick={() => reset()}>Try again</Button>
+    </Error>
   );
 }

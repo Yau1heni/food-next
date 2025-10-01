@@ -4,8 +4,8 @@ export const routes = {
     create: () => '/',
   },
   recipe: {
-    mask: '/recipes/:id',
-    create: (id: string) => `/recipes/${id}`,
+    mask: '/recipe/:id',
+    create: (id: string) => `/recipe/${id}`,
   },
   favorites: {
     mask: '/favorites',

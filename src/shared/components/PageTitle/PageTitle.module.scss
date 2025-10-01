@@ -1,0 +1,27 @@
+@use '@styles/variables.scss' as *;
+@use '@styles/mixins.scss' as *;
+
+.pageTitle {
+  display: flex;
+  align-items: center;
+  gap: $space-m;
+  margin-top: 35px;
+
+  @include tablet {
+    margin-top: 24px;
+  }
+
+  .title {
+    font-size: $font-size-title;
+    line-height: 109%;
+
+    @include mobile {
+      font-size: $font-size-xl;
+    }
+  }
+
+  .goBack {
+    width: 32px;
+    height: 32px;
+  }
+}

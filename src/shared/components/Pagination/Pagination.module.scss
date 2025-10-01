@@ -1,0 +1,60 @@
+@use '@styles/variables.scss' as *;
+@use '@styles/mixins.scss' as *;
+
+.pagination {
+  display: flex;
+  gap: $space-m;
+  align-items: center;
+  justify-content: center;
+
+  @include mobile {
+    gap: $space-xs;
+  }
+}
+
+.pageButton {
+  padding: 10px 14px;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+
+  &:hover:not(:disabled) {
+    background-color: $color-primary-hover;
+  }
+
+  &:active:not(:disabled) {
+    background-color: $color-primary-active;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
+.arrowButton {
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  text-align: center;
+
+  &:disabled {
+    cursor: default;
+  }
+
+  @include mobile {
+    display: none;
+  }
+}
+
+.active {
+  background-color: $color-primary;
+  color: $color-light;
+}
+
+.dots {
+  cursor: default;
+  color: $color-dark;
+  background-color: transparent;
+  border: none;
+}

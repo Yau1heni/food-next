@@ -1,0 +1,27 @@
+@use '@styles/mixins.scss' as *;
+
+.ingredientsList {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 64px;
+
+  @include laptop {
+    justify-content: center;
+    gap: 32px;
+  }
+
+  .captionSlot {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}

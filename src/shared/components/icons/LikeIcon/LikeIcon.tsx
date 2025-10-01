@@ -4,7 +4,7 @@ import type { IconProps } from '../Icon';
 import Icon from '../Icon';
 
 const LikeIcon: React.FC<IconProps> = (props) => (
-  <Icon width={19} height={19} color={'accent'} viewBox="0 0 19 19" fill={'none'} {...props}>
+  <Icon width={19} height={19} color={'accent'} viewBox="0 0 19 19" {...props}>
     <path
       fillRule="evenodd"
       clipRule="evenodd"
