@@ -1,0 +1,1 @@
+export { IngredientsCardCaption } from './IngredientsCardCaption';

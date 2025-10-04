@@ -1,1 +1,1 @@
-export { categoriesApi } from './categoriesApi.ts';
+export { categoriesApi } from './categoriesApi';

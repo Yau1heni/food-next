@@ -12,7 +12,7 @@ import { observer } from 'mobx-react-lite';
 import { useRecipesPageStore } from '@/store/RecipesStore';
 
 export const RecipesPage = observer(() => {
-  const recipesStore = useRecipesPageStore().recipe;
+  const { recipe: recipesStore } = useRecipesPageStore();
 
   return (
     <Container>

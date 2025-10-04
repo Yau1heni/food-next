@@ -28,7 +28,7 @@
     height: 350px;
     overflow: hidden;
     background: $color-grey;
-    border-radius: $border-radius 0 0;
+    border-radius: $border-radius $border-radius 0 0;
 
     @include tablet {
       width: 50%;

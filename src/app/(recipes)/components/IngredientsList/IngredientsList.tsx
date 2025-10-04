@@ -3,26 +3,20 @@
 import Card from '@components/Card';
 import Text from '@components/Text';
 import styles from './IngredientsList.module.scss';
-import { Ingredient } from '@/store/models';
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 import { routes } from '@config/routes';
-import IngredientsCardAction from './IngredientsCardAction';
-import IngredientsCardCaption from './IngredientsCardCaption';
+import { IngredientsCardAction } from './IngredientsCardAction';
+import { IngredientsCardCaption } from './IngredientsCardCaption';
 import { useRootStore } from '@/store/RootStore/hooks';
 import Loader from '@/shared/components/Loader';
 import { Meta } from '@utils/meta';
-import { useCallback } from 'react';
 import { useRecipesPageStore } from '@/store/RecipesStore';
+import { getIngredients } from '@/app/(recipes)/components/IngredientsList/getIngredients';
 
 export const IngredientsList = observer(() => {
-  const recipes = useRecipesPageStore().recipe;
+  const { recipe: recipes } = useRecipesPageStore();
   const rootStore = useRootStore();
-
-  const getIngredients = useCallback(
-    (ingredients: Ingredient[]) => ingredients.map(({ name }) => name).join(' + '),
-    []
-  );
 
   if (!recipes) return null;
 
@@ -35,7 +29,7 @@ export const IngredientsList = observer(() => {
   }
 
   if (recipes.list.length === 0) {
-    return <Text>Список ингридиентов пуст</Text>;
+    return <Text>The list of ingredients is empty</Text>;
   }
 
   return (

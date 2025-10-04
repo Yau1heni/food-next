@@ -2,7 +2,7 @@
 
 import Button from '@components/Button';
 import Text from '@components/Text';
-import type { FC, ReactNode, MouseEvent } from 'react';
+import { FC, ReactNode, MouseEvent, useCallback } from 'react';
 import styles from './IngredientsCardAction.module.scss';
 import { observer } from 'mobx-react-lite';
 import { useRootStore } from '@/store/RootStore/hooks';
@@ -21,17 +21,23 @@ export const IngredientsCardAction: FC<IngredientsCardActionProps> = (props) => 
   const favorites = useRootStore().favorites;
   const isLoading = favorites.loadingById[id];
 
-  const handleRemove = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    favorites.removeFavorite(id);
-  };
+  const handleRemove = useCallback(
+    (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
+      favorites.removeFavorite(id);
+    },
+    [favorites, id]
+  );
 
-  const handleAdd = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    favorites.addFavorite(id);
-  };
+  const handleAdd = useCallback(
+    (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
+      favorites.addFavorite(id);
+    },
+    [favorites, id]
+  );
 
   return (
     <div className={styles.actionRow}>

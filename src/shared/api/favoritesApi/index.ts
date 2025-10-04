@@ -1,1 +1,1 @@
-export { favoritesApi } from './favoritesApi.ts';
+export { favoritesApi } from './favoritesApi';

@@ -1,7 +1,8 @@
 import qs from 'qs';
 import { GetRecipesArgs, Recipe } from '@/store/models';
-import { apiFetch } from '@utils/apiFetch';
+import { apiFetch, CACHE_LIFETIME_IN_SECONDS } from '@utils/apiFetch';
 import { ApiResponse } from '@api/types';
+import { ApiUrls } from '@config/apiUrls';
 
 type Filters = {
   name?: Record<string, string>;
@@ -46,7 +47,9 @@ export const recipesApi = {
       { encodeValuesOnly: true }
     );
 
-    return await apiFetch(`/recipes?${queryString}`);
+    return await apiFetch(ApiUrls.recipes.getRecipesUrl(queryString), {
+      next: { revalidate: CACHE_LIFETIME_IN_SECONDS },
+    });
   },
 
   async getRecipe(id: string): Promise<Recipe> {
@@ -55,7 +58,9 @@ export const recipesApi = {
       { encodeValuesOnly: true }
     );
 
-    const res = await apiFetch(`/recipes/${id}?${queryString}`);
+    const res = await apiFetch(ApiUrls.recipes.getRecipeUrl(queryString, id), {
+      next: { revalidate: CACHE_LIFETIME_IN_SECONDS },
+    });
     return res.data;
   },
 };

@@ -95,7 +95,16 @@ export default class RecipesStore {
     this._rootStore.query.page = page;
   }
 
-  static async getInitData(payload: GetRecipesArgs): Promise<RecipesPageStoreInitData> {
+  static async getInitData(
+    searchParams: Record<string, string>
+  ): Promise<RecipesPageStoreInitData> {
+    const payload = {
+      term: searchParams.searchTerm ?? '',
+      page: Number(searchParams.page ?? 1),
+      categories: searchParams.category ? getCategoryKeys(JSON.parse(searchParams.category)) : '',
+      isVegetarian: searchParams.isVegetarian === 'true',
+    };
+
     return await recipesApi.getRecipes(payload);
   }
 

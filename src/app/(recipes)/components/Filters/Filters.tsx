@@ -12,7 +12,7 @@ import styles from './Filters.module.scss';
 import { useRecipesPageStore } from '@/store/RecipesStore';
 
 export const Filters = observer(() => {
-  const categories = useRecipesPageStore().category;
+  const { category: categories } = useRecipesPageStore();
   const rootStore = useRootStore();
 
   const [localQuery, setLocalQuery] = useState(rootStore.query.getParam('searchTerm') || '');
