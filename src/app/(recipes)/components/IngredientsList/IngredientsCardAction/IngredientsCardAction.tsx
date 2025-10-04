@@ -16,10 +16,9 @@ type IngredientsCardActionProps = {
 };
 
 export const IngredientsCardAction: FC<IngredientsCardActionProps> = (props) => {
-  const { calories, action, isFavorite = false, id } = props;
+  const { calories, action, isFavorite = false, id, isLoading } = props;
 
-  const favorites = useRootStore().favorites;
-  const isLoading = favorites.loadingById[id];
+  const { favorites: favorites } = useRootStore();
 
   const handleRemove = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {

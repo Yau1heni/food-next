@@ -42,7 +42,6 @@ export default class FavoritesStore {
       meta: computed,
       isLimitReached: computed,
 
-      /*fetchFavoritesData: action,*/
       removeFavorite: action,
       addFavorite: action,
       setLoading: action,
@@ -93,9 +92,9 @@ export default class FavoritesStore {
 
     // Если товар уже в процессе — игнорируем
     if (this.getStatus(id) === Statuses.loading) return;
+
     this._statuses.set(id, Statuses.loading);
     this._activeRequests++;
-
     this.setLoading(id, true);
 
     const res = await favoritesApi.removeFavorite({ recipe: id });
@@ -104,17 +103,17 @@ export default class FavoritesStore {
       runInAction(() => {
         this._list.remove(id);
         this._meta = Meta.success;
-        this.setLoading(id, false);
         this._activeRequests--;
         this._statuses.set(id, Statuses.added);
+        this.setLoading(id, false);
       });
     } else {
       runInAction(() => {
         this._meta = Meta.error;
         this._list.reset();
-        this.setLoading(id, false);
         this._statuses.set(id, Statuses.error);
         this._activeRequests--;
+        this.setLoading(id, false);
       });
     }
   }
@@ -129,9 +128,9 @@ export default class FavoritesStore {
 
     // Если товар уже в процессе — игнорируем
     if (this.getStatus(id) === Statuses.loading) return;
+
     this._statuses.set(id, Statuses.loading);
     this._activeRequests++;
-
     this.setLoading(id, true);
 
     const res = await favoritesApi.addFavorite({ recipe: id });
@@ -149,8 +148,8 @@ export default class FavoritesStore {
         this._errorMessage = err instanceof Error ? err.message : String(err);
         this._meta = Meta.error;
         this._list.reset();
-        this.setLoading(id, false);
         this._statuses.set(id, Statuses.error);
+        this.setLoading(id, false);
       });
     } finally {
       runInAction(() => {

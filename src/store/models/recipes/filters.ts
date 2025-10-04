@@ -1,4 +1,4 @@
-import {CategoryModel} from "@/store/models";
+import { CategoryModel } from '@/store/models';
 
 export type FiltersModel = {
   name: string;

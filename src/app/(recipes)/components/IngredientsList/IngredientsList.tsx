@@ -51,6 +51,7 @@ export const IngredientsList = observer(() => {
                 id={el.id}
                 calories={el.calories}
                 isFavorite={rootStore.favorites.checkAvailability(el.id)}
+                isLoading={rootStore.favorites.loadingById[el.id]}
               />
             }
           />
