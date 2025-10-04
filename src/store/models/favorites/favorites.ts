@@ -5,7 +5,7 @@ export type Favorites = StrapiBase & {
   createdAt: string;
   updatedAt: string;
   publishedAt: Nullable<string>;
-  locale: null;
+  locale: Nullable<string>;
   originalRecipeId: number;
   recipe: Recipe;
 };
@@ -19,3 +19,5 @@ export const Statuses = {
 } as const;
 
 export type Statuses = (typeof Statuses)[keyof typeof Statuses];
+
+export const REQUESTS_LIMIT = 5;

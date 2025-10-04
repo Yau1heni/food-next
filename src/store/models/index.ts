@@ -11,5 +11,5 @@ export { PAGINATION_LIMIT, START_PAGE } from './recipes/pagination';
 export { getInitialPaginationModel } from './recipes/pagination';
 export { CollectionModel } from './shared/collection';
 export type { Favorites } from './favorites/favorites';
-export { Statuses } from './favorites/favorites';
+export { Statuses, REQUESTS_LIMIT } from './favorites/favorites';
 export type * from './shared/utills';

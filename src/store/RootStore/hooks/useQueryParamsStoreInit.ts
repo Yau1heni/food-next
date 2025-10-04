@@ -17,7 +17,7 @@ export const useQueryParamsStoreInit = (): void => {
   // 1. Инициализация из URL
   useEffect(() => {
     rootStore.query.setSearch(search);
-  }, [search]);
+  }, [rootStore.query, search]);
 
   useEffect(() => {
     const dispose = reaction(
@@ -31,5 +31,5 @@ export const useQueryParamsStoreInit = (): void => {
     );
 
     return () => dispose();
-  }, [pathname, router, search]);
+  }, [pathname, rootStore.query.searchString, router, search]);
 };

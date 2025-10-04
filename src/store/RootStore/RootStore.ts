@@ -17,18 +17,4 @@ export default class RootStore {
 
     makeAutoObservable(this);
   }
-
-  static async initOnServer(): Promise<RootStore> {
-    const store = new RootStore();
-
-    await store.favorites.getInitData();
-
-    return store;
-  }
-
-  serialize(): RootStoreInitData {
-    return {
-      favorites: this.favorites.serialize(),
-    };
-  }
 }

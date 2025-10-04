@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
-import { CollectionModel, Favorites, Nullable, Statuses } from '@/store/models';
+import { CollectionModel, Favorites, Nullable, REQUESTS_LIMIT, Statuses } from '@/store/models';
 import { Meta } from '@utils/meta';
 import RootStore from '@/store/RootStore';
 import { favoritesApi } from '@api/favoritesApi';
@@ -18,7 +18,6 @@ export default class FavoritesStore {
 
   private _statuses: Map<number, Statuses> = new Map();
   private _activeRequests: number = 0;
-  private _limit: number = 5;
 
   private _meta: Meta = Meta.initial;
   private _loadingById: Record<number, boolean> = {};
@@ -43,9 +42,10 @@ export default class FavoritesStore {
       meta: computed,
       isLimitReached: computed,
 
-      getInitData: action,
+      /*fetchFavoritesData: action,*/
       removeFavorite: action,
       addFavorite: action,
+      setLoading: action,
     });
   }
 
@@ -66,36 +66,28 @@ export default class FavoritesStore {
   }
 
   get isLimitReached() {
-    return this._activeRequests >= this._limit;
+    return this._activeRequests >= REQUESTS_LIMIT;
   }
 
   getStatus(productId: number) {
-    return this._statuses.get(productId) ?? 'idle';
+    return this._statuses.get(productId) ?? Statuses.idle;
   }
 
   get errorMessage(): Nullable<string> {
     return this._errorMessage;
   }
 
-  async getInitData(): Promise<void> {
+  static async fetchFavoritesData(): Promise<FavoritesPageStoreInitData> {
     const res = await favoritesApi.getFavorites();
 
-    runInAction(() => {
-      this._list.normalize(res, (listItem) => listItem.originalRecipeId);
-      this._meta = Meta.success;
-    });
-  }
-
-  serialize(): FavoritesPageStoreInitData {
-    return { data: this.list, meta: Meta.success };
+    return { data: res, meta: Meta.success };
   }
 
   async removeFavorite(id: number) {
-
     // Если лимит достигнут — блокируем
     if (this.isLimitReached) {
       this._statuses.set(id, Statuses.blocked);
-      alert('block'); // думаю добавить Toaster, в котором выведу сообщение (не успел оформить)
+      alert(Statuses.blocked); // думаю добавить Toaster, в котором выведу сообщение (не успел оформить)
       return;
     }
 
@@ -118,12 +110,12 @@ export default class FavoritesStore {
       });
     } else {
       runInAction(() => {
-      this._meta = Meta.error;
-      this._list.reset();
-      this.setLoading(id, false);
-      this._statuses.set(id, Statuses.error);
-      this._activeRequests--;
-      })
+        this._meta = Meta.error;
+        this._list.reset();
+        this.setLoading(id, false);
+        this._statuses.set(id, Statuses.error);
+        this._activeRequests--;
+      });
     }
   }
 
@@ -131,7 +123,7 @@ export default class FavoritesStore {
     // Если лимит достигнут — блокируем
     if (this.isLimitReached) {
       this._statuses.set(id, Statuses.blocked);
-      alert('block'); // думаю добавить Toaster, в котором выведу сообщение (не успел оформить)
+      alert(Statuses.blocked); // думаю добавить Toaster, в котором выведу сообщение (не успел оформить)
       return;
     }
 
@@ -154,17 +146,17 @@ export default class FavoritesStore {
       });
     } catch (err) {
       runInAction(() => {
-      this._errorMessage = err instanceof Error ? err.message : String(err);
-      this._meta = Meta.error;
-      this._list.reset();
-      this.setLoading(id, false);
-      this._statuses.set(id, Statuses.error);
-      })
+        this._errorMessage = err instanceof Error ? err.message : String(err);
+        this._meta = Meta.error;
+        this._list.reset();
+        this.setLoading(id, false);
+        this._statuses.set(id, Statuses.error);
+      });
     } finally {
       runInAction(() => {
         this._activeRequests--;
         this.setLoading(id, false);
-      })
+      });
     }
   }
 

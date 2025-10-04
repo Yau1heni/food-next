@@ -4,7 +4,7 @@ import '@styles/styles.scss';
 import { Layout } from '@components/Layout';
 import { RootStoreProvider } from '@/store/RootStore/hooks';
 import { ReactNode } from 'react';
-import RootStore from '@/store/RootStore';
+import FavoritesStore from '@/store/RootStore/FavoritesStore';
 
 const roboto = Roboto({
   variable: '--font-family',
@@ -20,13 +20,12 @@ export const metadata: Metadata = {
 type RootLayoutProps = Readonly<{ children: ReactNode }>;
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const store = await RootStore.initOnServer();
-  const data = store.serialize();
+  const favoritesData = await FavoritesStore.fetchFavoritesData();
 
   return (
     <html lang="en">
       <body className={`${roboto.variable}`}>
-        <RootStoreProvider initData={data}>
+        <RootStoreProvider initData={{ favorites: favoritesData }}>
           <Layout>{children}</Layout>
         </RootStoreProvider>
       </body>
