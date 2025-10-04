@@ -91,7 +91,6 @@ export default class FavoritesStore {
   }
 
   async removeFavorite(id: number) {
-    this.setLoading(id, true);
 
     // Если лимит достигнут — блокируем
     if (this.isLimitReached) {
@@ -114,15 +113,17 @@ export default class FavoritesStore {
         this._list.remove(id);
         this._meta = Meta.success;
         this.setLoading(id, false);
-
+        this._activeRequests--;
         this._statuses.set(id, Statuses.added);
       });
     } else {
+      runInAction(() => {
       this._meta = Meta.error;
       this._list.reset();
       this.setLoading(id, false);
       this._statuses.set(id, Statuses.error);
       this._activeRequests--;
+      })
     }
   }
 
@@ -152,14 +153,18 @@ export default class FavoritesStore {
         this._statuses.set(id, Statuses.added);
       });
     } catch (err) {
+      runInAction(() => {
       this._errorMessage = err instanceof Error ? err.message : String(err);
       this._meta = Meta.error;
       this._list.reset();
       this.setLoading(id, false);
-
       this._statuses.set(id, Statuses.error);
+      })
     } finally {
-      this._activeRequests--;
+      runInAction(() => {
+        this._activeRequests--;
+        this.setLoading(id, false);
+      })
     }
   }
 
