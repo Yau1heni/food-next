@@ -22,6 +22,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-toastify": "^11.0.5",
+    "react-virtuoso": "^4.14.1",
     "sass": "^1.93.1"
   },
   "devDependencies": {
