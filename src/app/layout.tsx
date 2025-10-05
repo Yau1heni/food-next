@@ -1,15 +1,16 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
-import './globals.css';
+import { Roboto } from 'next/font/google';
+import '@styles/styles.scss';
+import { Layout } from '@components/Layout';
+import { RootStoreProvider } from '@/store/RootStore/hooks';
+import { ReactNode, Suspense } from 'react';
+import FavoritesStore from '@/store/RootStore/FavoritesStore';
+import Loader from '@components/Loader';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const roboto = Roboto({
+  variable: '--font-family',
   subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  weight: ['400', '500', '700'],
 });
 
 export const metadata: Metadata = {
@@ -17,14 +18,20 @@ export const metadata: Metadata = {
   description: 'Choose recipes for your dishes',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+type RootLayoutProps = Readonly<{ children: ReactNode }>;
+
+export default async function RootLayout({ children }: RootLayoutProps) {
+  const favoritesData = await FavoritesStore.fetchFavoritesData();
+
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
+      <body className={`${roboto.variable}`}>
+        <Suspense fallback={<Loader />}>
+          <RootStoreProvider initData={{ favorites: favoritesData }}>
+            <Layout>{children}</Layout>
+          </RootStoreProvider>
+        </Suspense>
+      </body>
     </html>
   );
 }

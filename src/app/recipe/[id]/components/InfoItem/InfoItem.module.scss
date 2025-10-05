@@ -1,0 +1,8 @@
+@use '@styles/variables.scss' as *;
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-xxs;
+}

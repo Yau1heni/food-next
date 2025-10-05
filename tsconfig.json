@@ -18,8 +18,15 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@components*": ["./src/shared/components*"],
+      "@config*": ["./src/shared/config*"],
+      "@styles*": ["./src/shared/styles*"],
+      "@api*": ["./src/shared/api*"],
+      "@hooks*": ["./src/shared/hooks*"],
+      "@utils*": ["./src/shared/utils*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

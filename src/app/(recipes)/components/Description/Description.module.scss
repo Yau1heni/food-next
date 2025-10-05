@@ -1,0 +1,11 @@
+.description {
+  display: flex;
+  justify-content: center;
+
+  .underlineText {
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+    white-space: nowrap;
+    display: inline;
+  }
+}

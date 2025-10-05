@@ -1,0 +1,15 @@
+@use '@styles/variables' as *;
+
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 64px);
+
+  .errorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-l;
+  }
+}

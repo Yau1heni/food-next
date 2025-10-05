@@ -1,0 +1,22 @@
+@use '@styles/variables.scss' as *;
+@use '@styles/mixins.scss' as *;
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xl;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(min-content, 310px));
+    gap: 8px 30px;
+    justify-content: start;
+
+    @include mobile {
+      grid-template-columns: repeat(1, 1fr);
+      gap: 8px;
+    }
+  }
+}

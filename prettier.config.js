@@ -9,6 +9,7 @@ const config = {
   useTabs: false,
   semi: true,
   trailingComma: 'es5',
+  bracketSpacing: true,
 };
 
 export default config;

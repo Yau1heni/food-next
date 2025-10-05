@@ -1,0 +1,39 @@
+@use '@styles/variables.scss' as *;
+@use '@styles/mixins.scss' as *;
+
+.ingredientsSection {
+  display: flex;
+  gap: 50px;
+
+  @include laptop {
+    gap: 16px;
+  }
+
+  @include tablet {
+    flex-direction: column;
+  }
+}
+
+.line {
+  position: relative;
+  width: 1px;
+  height: auto;
+  background: $color-primary;
+  margin: 20px auto;
+
+  @include tablet {
+    display: none;
+  }
+}
+
+.line::before {
+  content: '';
+  position: absolute;
+  top: -17px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 7px;
+  background: $color-primary;
+  border-radius: $radius-circle;
+}

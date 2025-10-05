@@ -1,0 +1,9 @@
+@use '@styles/variables.scss' as *;
+
+.directionStep {
+  margin-bottom: $space-xl;
+}
+
+.stepNumber {
+  margin-bottom: $space-xxs;
+}

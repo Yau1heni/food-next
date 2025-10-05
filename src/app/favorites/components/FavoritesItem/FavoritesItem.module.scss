@@ -1,0 +1,69 @@
+@use '@styles/variables.scss' as *;
+@use '@styles/mixins.scss' as *;
+
+.favoritesItem {
+  background-color: $color-light;
+  border-radius: $border-radius;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: $space-xl;
+
+  @include mobile {
+    align-items: center;
+  }
+
+  .itemBody {
+    display: flex;
+    gap: $space-l;
+    align-items: center;
+
+    @include tablet {
+      align-items: start;
+    }
+
+    @include mobile {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .image img {
+      border-radius: $radius-circle;
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+
+      @include mobile {
+        width: 240px;
+        height: 240px;
+      }
+    }
+
+    .description {
+      display: flex;
+      flex-direction: column;
+      gap: $space-m;
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: $space-s;
+    justify-content: flex-end;
+
+    @include mobile {
+      flex-direction: column-reverse;
+      width: 100%;
+    }
+
+    .collapsedButton {
+      background-color: transparent;
+      color: $color-dark;
+
+      &:hover {
+        color: $color-primary-hover;
+        background-color: transparent;
+      }
+    }
+  }
+}

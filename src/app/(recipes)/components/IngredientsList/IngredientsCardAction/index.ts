@@ -1,0 +1,1 @@
+export { IngredientsCardAction } from './IngredientsCardAction';

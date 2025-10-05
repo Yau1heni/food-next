@@ -1,0 +1,7 @@
+@use '@styles/variables.scss' as *;
+
+.ingredientItem {
+  display: flex;
+  align-items: center;
+  gap: $space-m;
+}

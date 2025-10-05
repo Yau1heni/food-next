@@ -1,0 +1,7 @@
+@use '@styles/variables.scss' as *;
+
+.favoritesList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xl;
+}

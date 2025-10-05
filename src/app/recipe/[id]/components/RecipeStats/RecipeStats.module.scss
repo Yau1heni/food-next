@@ -1,0 +1,21 @@
+@use '@styles/mixins.scss' as *;
+
+.recipeStats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 50px 100px;
+  margin: 0 auto;
+
+  @include desktop {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include tablet {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+
+  @include mobile {
+    gap: 32px 8px;
+  }
+}

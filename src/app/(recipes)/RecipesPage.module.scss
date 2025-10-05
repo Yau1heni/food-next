@@ -1,0 +1,33 @@
+@use '@styles/variables.scss' as *;
+@use '@styles/mixins.scss' as *;
+
+.bannerImage {
+  width: 100%;
+  height: 572px;
+
+  @include laptop {
+    height: 360px;
+  }
+
+  @include mobile {
+    display: none;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-repeat: no-repeat;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  margin: $space-l 0;
+
+  @include laptop {
+    gap: 24px;
+  }
+}
