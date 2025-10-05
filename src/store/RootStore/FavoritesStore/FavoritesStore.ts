@@ -1,15 +1,16 @@
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
-import { CollectionModel, Favorites, Nullable, REQUESTS_LIMIT, Statuses } from '@/store/models';
+import { CollectionModel, Favorites, REQUESTS_LIMIT, Statuses } from '@/store/models';
 import { Meta } from '@utils/meta';
 import RootStore from '@/store/RootStore';
 import { favoritesApi } from '@api/favoritesApi';
+import { toast } from 'react-toastify';
 
 export type FavoritesPageStoreInitData = {
   data: Favorites[];
   meta: Meta;
 };
 
-type PrivateFields = '_list' | '_loadingById' | '_errorMessage' | '_meta';
+type PrivateFields = '_list' | '_loadingById' | '_meta';
 
 export default class FavoritesStore {
   private _rootStore: RootStore;
@@ -21,7 +22,6 @@ export default class FavoritesStore {
 
   private _meta: Meta = Meta.initial;
   private _loadingById: Record<number, boolean> = {};
-  private _errorMessage: Nullable<string> = null;
 
   constructor(rootStore: RootStore, init?: FavoritesPageStoreInitData) {
     this._rootStore = rootStore;
@@ -35,7 +35,6 @@ export default class FavoritesStore {
       _list: observable.ref,
       _loadingById: observable,
       _meta: observable,
-      _errorMessage: observable,
 
       list: computed,
       loadingById: computed,
@@ -72,10 +71,6 @@ export default class FavoritesStore {
     return this._statuses.get(productId) ?? Statuses.idle;
   }
 
-  get errorMessage(): Nullable<string> {
-    return this._errorMessage;
-  }
-
   static async fetchFavoritesData(): Promise<FavoritesPageStoreInitData> {
     const res = await favoritesApi.getFavorites();
 
@@ -86,7 +81,7 @@ export default class FavoritesStore {
     // Если лимит достигнут — блокируем
     if (this.isLimitReached) {
       this._statuses.set(id, Statuses.blocked);
-      alert(Statuses.blocked); // думаю добавить Toaster, в котором выведу сообщение (не успел оформить)
+      toast.warning('The request limit has been reached, please wait...');
       return;
     }
 
@@ -96,25 +91,39 @@ export default class FavoritesStore {
     this._statuses.set(id, Statuses.loading);
     this._activeRequests++;
     this.setLoading(id, true);
+    const prescriptionForRemoval = this.list.find((f) => id === f.originalRecipeId);
 
-    const res = await favoritesApi.removeFavorite({ recipe: id });
+    try {
+      const res = await favoritesApi.removeFavorite({ recipe: id });
 
-    if (res.ok) {
-      runInAction(() => {
-        this._list.remove(id);
-        this._meta = Meta.success;
-        this._activeRequests--;
-        this._statuses.set(id, Statuses.added);
-        this.setLoading(id, false);
-      });
-    } else {
-      runInAction(() => {
-        this._meta = Meta.error;
-        this._list.reset();
-        this._statuses.set(id, Statuses.error);
-        this._activeRequests--;
-        this.setLoading(id, false);
-      });
+      if (res.ok) {
+        runInAction(() => {
+          this._list.remove(id);
+          this._meta = Meta.success;
+          this._activeRequests--;
+          this._statuses.set(id, Statuses.added);
+          this.setLoading(id, false);
+          toast.success(
+            `${prescriptionForRemoval?.recipe.name} successfully removed from favorites`
+          );
+        });
+      } else {
+        runInAction(() => {
+          this._meta = Meta.error;
+          this._list.reset();
+          this._statuses.set(id, Statuses.error);
+          this._activeRequests--;
+          this.setLoading(id, false);
+          toast.error(
+            `An error occurred while deleting ${prescriptionForRemoval?.recipe.name} from favorites`
+          );
+        });
+      }
+    } catch (err) {
+      this._statuses.set(id, Statuses.error);
+      this._activeRequests--;
+      this.setLoading(id, false);
+      toast.error(err instanceof Error ? err.message : String(err));
     }
   }
 
@@ -122,7 +131,7 @@ export default class FavoritesStore {
     // Если лимит достигнут — блокируем
     if (this.isLimitReached) {
       this._statuses.set(id, Statuses.blocked);
-      alert(Statuses.blocked); // думаю добавить Toaster, в котором выведу сообщение (не успел оформить)
+      toast.warning('The request limit has been reached, please wait...');
       return;
     }
 
@@ -133,23 +142,23 @@ export default class FavoritesStore {
     this._activeRequests++;
     this.setLoading(id, true);
 
-    const res = await favoritesApi.addFavorite({ recipe: id });
-
     try {
+      const res = await favoritesApi.addFavorite({ recipe: id });
+
       runInAction(() => {
         this._list.add(res, (listItem) => listItem.originalRecipeId);
         this._meta = Meta.success;
         this.setLoading(id, false);
-
         this._statuses.set(id, Statuses.added);
+        toast.success(`${res.recipe.name} successfully added to favorites`);
       });
     } catch (err) {
       runInAction(() => {
-        this._errorMessage = err instanceof Error ? err.message : String(err);
         this._meta = Meta.error;
         this._list.reset();
         this._statuses.set(id, Statuses.error);
         this.setLoading(id, false);
+        toast.error(err instanceof Error ? err.message : String(err));
       });
     } finally {
       runInAction(() => {

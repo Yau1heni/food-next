@@ -21,19 +21,14 @@ import RootStore from '@/store/RootStore';
 import { recipesApi } from '@api/recipesApi';
 import { MetaApi } from '@api/types';
 import { Option } from '@components/MultiDropdown';
+import { toast } from 'react-toastify';
 
 export type RecipesPageStoreInitData = {
   data: Recipe[];
   meta: MetaApi;
 };
 
-type PrivateFields =
-  | '_list'
-  | '_meta'
-  | '_errorMessage'
-  | '_pagination'
-  | '_reactionDisposer'
-  | '_rootStore';
+type PrivateFields = '_list' | '_meta' | '_pagination' | '_reactionDisposer' | '_rootStore';
 
 export default class RecipesStore {
   private _rootStore: RootStore;
@@ -41,7 +36,6 @@ export default class RecipesStore {
   private _list = new CollectionModel<number, Recipe>();
   private _pagination: PaginationModel = getInitialPaginationModel();
   private _meta: Meta = Meta.initial;
-  private _errorMessage: Nullable<string> = null;
   private _reactionDisposer: Nullable<() => void> = null;
 
   constructor(rootStore: RootStore, init?: RecipesPageStoreInitData) {
@@ -61,7 +55,6 @@ export default class RecipesStore {
       _list: observable.ref,
       _pagination: observable,
       _meta: observable,
-      _errorMessage: observable,
       _reactionDisposer: observable,
 
       list: computed,
@@ -87,10 +80,6 @@ export default class RecipesStore {
     return this._meta;
   }
 
-  get errorMessage(): Nullable<string> {
-    return this._errorMessage;
-  }
-
   setPage(page: number): void {
     this._rootStore.query.page = page;
   }
@@ -111,18 +100,17 @@ export default class RecipesStore {
   async load(payload: GetRecipesArgs) {
     this._meta = Meta.loading;
     this._list.reset();
-    this._errorMessage = null;
-
-    const response = await recipesApi.getRecipes(payload);
 
     try {
+      const response = await recipesApi.getRecipes(payload);
+
       runInAction(() => {
         this._list.normalize(response.data, (listItem) => listItem.id);
         this._meta = Meta.success;
         this._pagination = response.meta.pagination;
       });
     } catch (err) {
-      this._errorMessage = err instanceof Error ? err.message : String(err);
+      toast.error(err instanceof Error ? err.message : String(err));
       this._meta = Meta.error;
       this._list.reset();
     }
