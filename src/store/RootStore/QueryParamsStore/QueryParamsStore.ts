@@ -81,7 +81,7 @@ export default class QueryParamsStore {
 
   set searchTerm(term: string) {
     this.page = START_PAGE;
-    this.setParam(QueryParams.searchString, term);
+    this.setParam(QueryParams.searchTerm, term);
   }
 
   get category(): CategoryModel[] {

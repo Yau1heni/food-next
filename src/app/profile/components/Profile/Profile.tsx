@@ -9,7 +9,7 @@ import { useRootStore } from '@/store/RootStore/hooks';
 import { useClient } from '@hooks/useClient';
 import Loader from '@components/Loader';
 import { observer } from 'mobx-react-lite';
-import { EditableField } from '@components/EditableField/EditableField';
+import { EditableField } from '@components/EditableField';
 
 export const Profile = observer(() => {
   const { profile } = useRootStore();

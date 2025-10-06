@@ -33,9 +33,6 @@ export const recipesApi = {
       };
     }
 
-    console.log(rating, 'rating');
-    console.log(categories, 'category');
-
     if (rating) {
       filters.rating = {
         $in: rating.map((el) => el.value),
