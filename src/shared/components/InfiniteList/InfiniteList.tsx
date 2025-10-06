@@ -19,7 +19,7 @@ export const InfiniteScrollList = <T,>(props: InfiniteScrollListProps<T>) => {
       data={visibleData}
       overscan={200}
       itemContent={(index, item) => (
-        <div style={{ marginBottom: '20x' }} key={index}>
+        <div key={index}>
           {children(item, index)}
         </div>
       )}

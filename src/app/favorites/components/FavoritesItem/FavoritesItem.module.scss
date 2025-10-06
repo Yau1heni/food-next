@@ -8,6 +8,7 @@
   display: flex;
   flex-direction: column;
   gap: $space-xl;
+  margin-bottom: $space-l;
 
   @include mobile {
     align-items: center;
