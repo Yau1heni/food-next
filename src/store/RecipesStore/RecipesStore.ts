@@ -92,6 +92,7 @@ export default class RecipesStore {
       page: Number(searchParams.page ?? 1),
       categories: searchParams.category ? getCategoryKeys(JSON.parse(searchParams.category)) : '',
       isVegetarian: searchParams.isVegetarian === 'true',
+      rating: searchParams.rating ? JSON.parse(searchParams.rating) : '',
     };
 
     return await recipesApi.getRecipes(payload);
@@ -127,13 +128,15 @@ export default class RecipesStore {
         this._rootStore.query.page,
         this._rootStore.query.vegetarian,
         this._rootStore.query.category,
+        this._rootStore.query.rating,
       ],
-      ([term, page, isVegetarian, categories]) => {
+      ([term, page, isVegetarian, categories, rating]) => {
         this.load({
           term,
           page,
           isVegetarian,
           categories: getCategoryKeys(categories as Option[]),
+          rating,
         } as GetRecipesArgs);
       },
       {

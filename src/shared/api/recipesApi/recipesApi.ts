@@ -10,11 +10,12 @@ type Filters = {
   category?: {
     id: Record<string, string[]>;
   };
+  rating?: Record<string, string[]>;
 };
 
 export const recipesApi = {
   async getRecipes(data: GetRecipesArgs): Promise<ApiResponse<Recipe[]>> {
-    const { page, term, categories, isVegetarian } = data;
+    const { page, term, categories, isVegetarian, rating } = data;
 
     const filters: Filters = {};
 
@@ -29,6 +30,15 @@ export const recipesApi = {
         id: {
           $in: categories.split(','),
         },
+      };
+    }
+
+    console.log(rating, 'rating');
+    console.log(categories, 'category');
+
+    if (rating) {
+      filters.rating = {
+        $in: rating.map((el) => el.value),
       };
     }
 

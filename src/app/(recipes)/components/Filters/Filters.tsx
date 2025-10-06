@@ -10,6 +10,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRootStore } from '@/store/RootStore/hooks';
 import styles from './Filters.module.scss';
 import { useRecipesPageStore } from '@/store/RecipesStore';
+import { getCategoriesTitle } from '@utils/getTitle';
+import { RatingDropdown } from './RatingDropdown';
 
 export const Filters = observer(() => {
   const { category: categories } = useRecipesPageStore();
@@ -31,10 +33,6 @@ export const Filters = observer(() => {
 
     return () => dispose();
   }, [rootStore.query]);
-
-  const getTitle = useCallback((value: Option[]) => {
-    return value.length > 0 ? value.map((v) => v.value).join(', ') : 'Categories';
-  }, []);
 
   const onChangeCategories = useCallback(
     (value: Option[]) => {
@@ -71,8 +69,9 @@ export const Filters = observer(() => {
             options={categories.list}
             value={rootStore.query.category}
             onChange={onChangeCategories}
-            getTitle={getTitle}
+            getTitle={getCategoriesTitle}
           />
+          <RatingDropdown />
           <div className={styles.vegetarian}>
             <Text>Vegetarian:</Text>
             <CheckBox checked={rootStore.query.vegetarian} onChange={onChangeVegetarian} />

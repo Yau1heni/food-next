@@ -1,7 +1,7 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 import qs from 'qs';
 import type { ParsedQs } from 'qs';
-import { CategoryModel, START_PAGE } from '@/store/models';
+import { CategoryModel, QueryParams, START_PAGE } from '@/store/models';
 import RootStore from '@/store/RootStore';
 
 export type QueryParamsStoreInitData = {
@@ -36,6 +36,7 @@ export default class QueryParamsStore {
       category: computed,
       searchString: computed,
       vegetarian: computed,
+      rating: computed,
     });
   }
 
@@ -71,7 +72,7 @@ export default class QueryParamsStore {
   }
 
   set page(p: number) {
-    this.setParam('page', p);
+    this.setParam(QueryParams.page, p);
   }
 
   get searchTerm(): string {
@@ -80,11 +81,11 @@ export default class QueryParamsStore {
 
   set searchTerm(term: string) {
     this.page = START_PAGE;
-    this.setParam('searchTerm', term);
+    this.setParam(QueryParams.searchString, term);
   }
 
   get category(): CategoryModel[] {
-    const categoryParam = this.getParam('category');
+    const categoryParam = this.getParam(QueryParams.category);
     if (!categoryParam) return [];
 
     try {
@@ -95,7 +96,7 @@ export default class QueryParamsStore {
   }
 
   set category(value: CategoryModel[]) {
-    this.setParam('category', JSON.stringify(value));
+    this.setParam(QueryParams.category, JSON.stringify(value));
     this.page = START_PAGE;
   }
 
@@ -105,7 +106,23 @@ export default class QueryParamsStore {
 
   set vegetarian(isVegetarian: boolean) {
     this.page = START_PAGE;
-    this.setParam('isVegetarian', String(isVegetarian));
+    this.setParam(QueryParams.vegetarian, String(isVegetarian));
+  }
+
+  get rating(): [] {
+    const ratingParam = this.getParam(QueryParams.rating);
+    if (!ratingParam) return [];
+
+    try {
+      return JSON.parse(ratingParam as string);
+    } catch {
+      return [];
+    }
+  }
+
+  set rating(rating: { key: string; value: string }[]) {
+    this.setParam(QueryParams.rating, JSON.stringify(rating));
+    this.page = START_PAGE;
   }
 
   reset() {
