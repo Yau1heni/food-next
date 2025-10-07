@@ -1,7 +1,7 @@
 import FavoritesStore, { FavoritesPageStoreInitData } from '@/store/RootStore/FavoritesStore';
 import { makeAutoObservable } from 'mobx';
 import QueryParamsStore, { QueryParamsStoreInitData } from '@/store/RootStore/QueryParamsStore';
-import ProfileStore from '@/store/ProfileStore';
+import ProfileStore from '@/store/RootStore/ProfileStore';
 
 export type RootStoreInitData = {
   query?: QueryParamsStoreInitData;
