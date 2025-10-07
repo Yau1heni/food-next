@@ -14,3 +14,4 @@ export type { Favorites } from './favorites/favorites';
 export { Statuses, REQUESTS_LIMIT } from './favorites/favorites';
 export type * from './shared/utills';
 export { QueryParams } from './query/query';
+export { profileDataInit } from './profile/profile';

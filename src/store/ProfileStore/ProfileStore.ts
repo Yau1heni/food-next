@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { toast } from 'react-toastify';
 import { safeRead, safeWrite } from '@utils/localStorage';
+import { profileDataInit } from '@/store/models';
 
 export type ProfileStoreInitData = {
   name: string;
@@ -11,13 +12,7 @@ export type ProfileStoreInitData = {
 };
 
 export default class ProfileStore {
-  profileData: ProfileStoreInitData = {
-    name: '',
-    email: '',
-    password: '',
-    avatarId: undefined,
-    avatarUrl: undefined,
-  };
+  profileData: ProfileStoreInitData = profileDataInit;
 
   draftName = '';
   draftEmail = '';
