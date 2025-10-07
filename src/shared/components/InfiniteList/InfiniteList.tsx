@@ -18,11 +18,7 @@ export const InfiniteScrollList = <T,>(props: InfiniteScrollListProps<T>) => {
       style={{ height: 'calc(100vh - 250px)' }}
       data={visibleData}
       overscan={200}
-      itemContent={(index, item) => (
-        <div key={index}>
-          {children(item, index)}
-        </div>
-      )}
+      itemContent={(index, item) => <div key={index}>{children(item, index)}</div>}
       endReached={() => {
         if (hasMore) {
           loadMore();

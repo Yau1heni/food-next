@@ -12,8 +12,9 @@ import { routes } from '@config/routes';
 import { useRootStore } from '@/store/RootStore/hooks';
 import { Avatar } from '@components/Avatar';
 import { useClient } from '@hooks/useClient';
+import { observer } from 'mobx-react-lite';
 
-export const Header = () => {
+export const Header = observer(() => {
   const { profile } = useRootStore();
 
   const [open, setOpen] = useState(false);
@@ -43,11 +44,11 @@ export const Header = () => {
             <Navigation />
           </div>
           <Link href={routes.profile.mask} className={styles.controls}>
-            {isClient && <Avatar src={profile.avatarUrl} alt={'avatar'} size={30} />}
-            <Text>{isClient ? profile.name : ''}</Text>
+            {isClient && <Avatar src={profile.profileData.avatarUrl} alt={'avatar'} size={30} />}
+            <Text>{isClient ? profile.profileData.name : ''}</Text>
           </Link>
         </div>
       </Container>
     </header>
   );
-};
+});

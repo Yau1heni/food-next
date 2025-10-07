@@ -9,44 +9,56 @@ interface EditableFieldProps {
   onSave?: (value: string) => void;
   placeholder?: string;
   inputType?: string;
+  isEdit?: boolean;
+  setEditMode: (value: string) => void;
+  removeEdit: (value: string) => void;
+  name: string;
 }
 
 export const EditableField: React.FC<EditableFieldProps> = (props) => {
-  const { initialValue, onSave, placeholder, inputType = 'text' } = props;
+  const {
+    initialValue,
+    onSave,
+    placeholder,
+    inputType = 'text',
+    isEdit,
+    removeEdit,
+    setEditMode,
+    name,
+  } = props;
 
-  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [localValue, setLocalValue] = useState(initialValue);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isEditing && inputRef.current) {
+    if (isEdit && inputRef.current) {
       inputRef.current.focus();
       inputRef.current.select();
     }
-  }, [isEditing]);
+  }, [isEdit]);
 
   const handleEditClick = useCallback((): void => {
     setLocalValue(initialValue);
-    setIsEditing(true);
-  }, [initialValue]);
+    setEditMode(name);
+  }, [initialValue, name, setEditMode]);
 
   const handleSave = useCallback((): void => {
     const newValue = localValue.trim();
-    setIsEditing(false);
+    removeEdit(name);
 
     if (onSave && newValue !== initialValue) {
       onSave(newValue);
     }
-  }, [localValue, initialValue, onSave]);
+  }, [initialValue, localValue, name, onSave, removeEdit]);
 
   const handleCancel = useCallback((): void => {
     setLocalValue(initialValue);
-    setIsEditing(false);
-  }, [initialValue]);
+    removeEdit(name);
+  }, [initialValue, name, removeEdit]);
 
   return (
     <div className={styles.editableField}>
-      {!initialValue || isEditing ? (
+      {!initialValue || isEdit ? (
         <div className={styles.editContainer}>
           <Input
             ref={inputRef}

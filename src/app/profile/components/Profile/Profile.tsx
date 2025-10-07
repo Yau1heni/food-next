@@ -29,7 +29,7 @@ export const Profile = observer(() => {
     <div className={styles.profile}>
       <div className={styles.avatarRow}>
         <Avatar
-          src={profile.avatarUrl}
+          src={profile.draftAvatarUrl}
           size={96}
           className={styles.avatar}
           imageClassName={styles.avatarImage}
@@ -41,18 +41,26 @@ export const Profile = observer(() => {
         </div>
       </div>
       <EditableField
-        initialValue={profile.name}
+        initialValue={profile.draftName}
         onSave={profile.setName}
         placeholder={'enter name'}
+        removeEdit={profile.removeEdit}
+        setEditMode={profile.setEditMode}
+        isEdit={profile.isEdit('name')}
+        name={'name'}
       />
       <EditableField
-        initialValue={profile.email}
+        initialValue={profile.draftEmail}
         onSave={profile.setEmail}
         inputType={'email'}
         placeholder={'enter email'}
+        removeEdit={profile.removeEdit}
+        setEditMode={profile.setEditMode}
+        isEdit={profile.isEdit('email')}
+        name={'email'}
       />
       <Input
-        value={profile.password}
+        value={profile.draftPassword}
         onChange={profile.setPassword}
         placeholder="Password"
         type="password"

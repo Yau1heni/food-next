@@ -3,20 +3,30 @@ import { toast } from 'react-toastify';
 import { safeRead, safeWrite } from '@utils/localStorage';
 
 export type ProfileStoreInitData = {
-  name?: string;
-  email?: string;
-  password?: string;
-  avatarId?: number;
-  avatarUrl?: string;
+  name: string;
+  email: string;
+  password: string;
+  avatarId: number | undefined;
+  avatarUrl: string | undefined;
 };
 
 export default class ProfileStore {
-  name = '';
-  email = '';
-  password = '';
-  avatarId: number | undefined = undefined;
-  avatarUrl: string | undefined = undefined;
+  profileData: ProfileStoreInitData = {
+    name: '',
+    email: '',
+    password: '',
+    avatarId: undefined,
+    avatarUrl: undefined,
+  };
+
+  draftName = '';
+  draftEmail = '';
+  draftPassword = '';
+  draftAvatarId: number | undefined = undefined;
+  draftAvatarUrl: string | undefined = undefined;
   isHydrated = false;
+
+  editableFields: string[] = [];
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
@@ -27,19 +37,34 @@ export default class ProfileStore {
   }
 
   get canSave() {
-    return Boolean(this.name.trim() || this.email.trim() || this.password.trim());
+    return Boolean(
+      (this.draftName.trim() || this.draftEmail.trim() || this.draftPassword.trim()) &&
+        this.editableFields.length === 0
+    );
   }
 
   setName(value: string) {
-    this.name = value;
+    this.draftName = value;
   }
 
   setEmail(value: string) {
-    this.email = value;
+    this.draftEmail = value;
   }
 
   setPassword(value: string) {
-    this.password = value;
+    this.draftPassword = value;
+  }
+
+  setEditMode(value: string) {
+    this.editableFields.push(value);
+  }
+
+  isEdit(value: string) {
+    return !!this.editableFields.find((el) => el === value);
+  }
+
+  removeEdit(value: string) {
+    this.editableFields = this.editableFields.filter((el) => el !== value);
   }
 
   async upload(file: File) {
@@ -58,8 +83,8 @@ export default class ProfileStore {
       });
 
       runInAction(() => {
-        this.avatarId = undefined;
-        this.avatarUrl = dataUrl;
+        this.draftAvatarId = undefined;
+        this.draftAvatarUrl = dataUrl;
       });
     } catch (e: unknown) {
       runInAction(() => {
@@ -68,25 +93,46 @@ export default class ProfileStore {
     }
   }
 
+  saveProfileData() {
+    this.profileData = {
+      name: this.draftName,
+      email: this.draftEmail,
+      password: this.draftPassword,
+      avatarId: this.draftAvatarId,
+      avatarUrl: this.draftAvatarUrl,
+    };
+  }
+
   save() {
     safeWrite({
-      name: this.name,
-      email: this.email,
-      password: this.password,
-      avatarId: this.avatarId,
-      avatarUrl: this.avatarUrl,
+      name: this.draftName,
+      email: this.draftEmail,
+      password: this.draftPassword,
+      avatarId: this.draftAvatarId,
+      avatarUrl: this.draftAvatarUrl,
     });
+
+    this.saveProfileData();
+
     toast.success('Profile saved');
   }
 
   hydrateFromLocalStorage() {
     const data = safeRead();
 
-    this.name = data.name || this.name;
-    this.email = data.email || this.email;
-    this.password = data.password || this.password;
-    this.avatarId = data.avatarId ?? this.avatarId;
-    this.avatarUrl = data.avatarUrl ?? this.avatarUrl;
+    this.profileData = {
+      name: data.name || this.draftName,
+      email: data.email || this.draftEmail,
+      password: data.password || this.draftPassword,
+      avatarId: data.avatarId ?? this.draftAvatarId,
+      avatarUrl: data.avatarUrl ?? this.draftAvatarUrl,
+    };
+
+    this.draftName = data.name || this.draftName;
+    this.draftEmail = data.email || this.draftEmail;
+    this.draftPassword = data.password || this.draftPassword;
+    this.draftAvatarId = data.avatarId ?? this.draftAvatarId;
+    this.draftAvatarUrl = data.avatarUrl ?? this.draftAvatarUrl;
 
     this.isHydrated = true;
   }

@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation';
 
 export type NavigationProps = {
   className?: string;
-  onCloseNodal?: ()=> void
+  onCloseNodal?: () => void;
 };
 
 export const Navigation: FC<NavigationProps> = ({ className, onCloseNodal }) => {
