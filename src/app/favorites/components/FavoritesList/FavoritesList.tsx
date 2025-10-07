@@ -8,14 +8,13 @@ import Text from '@components/Text';
 import { InfiniteScrollList } from '@components/InfiniteList';
 
 export const FavoritesList = observer(() => {
-  const store = useRootStore();
-  const favorites = store.favorites;
+  const { favorites } = useRootStore();
 
   const onRemove = useCallback(
     (id: number) => {
-      store.favorites.removeFavorite(id);
+      favorites.removeFavorite(id);
     },
-    [store.favorites]
+    [favorites]
   );
 
   if (!favorites) return null;
@@ -27,13 +26,7 @@ export const FavoritesList = observer(() => {
   return (
     <InfiniteScrollList items={favorites.list} limit={5}>
       {(el) => (
-        <FavoritesItem
-          key={el.id}
-          id={el.originalRecipeId}
-          item={el.recipe}
-          onRemove={onRemove}
-          isLoading={favorites.loadingById[el.originalRecipeId]}
-        />
+        <FavoritesItem key={el.id} id={el.originalRecipeId} item={el.recipe} onRemove={onRemove} />
       )}
     </InfiniteScrollList>
   );

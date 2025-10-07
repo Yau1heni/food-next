@@ -9,16 +9,17 @@ import Text from '@components/Text';
 import { Recipe } from '@/store/models';
 import Image from 'next/image';
 import { observer } from 'mobx-react-lite';
+import { useRootStore } from '@/store/RootStore/hooks';
 
 type FavoritesItemProps = {
   item?: Recipe;
   onRemove: (id: number) => void;
   id: number;
-  isLoading?: boolean;
 };
 
 export const FavoritesItem: FC<FavoritesItemProps> = observer((props) => {
-  const { item, onRemove, id, isLoading } = props;
+  const { favorites } = useRootStore();
+  const { item, onRemove, id } = props;
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const handleToggleCollapsed = useCallback((e: MouseEvent<HTMLButtonElement>) => {
@@ -60,7 +61,7 @@ export const FavoritesItem: FC<FavoritesItemProps> = observer((props) => {
         </div>
 
         <div className={styles.actions}>
-          <Button loading={isLoading} onClick={handleRemove}>
+          <Button loading={favorites.loadingById[id]} onClick={handleRemove}>
             Remove
           </Button>
           <Button className={styles.collapsedButton} onClick={handleToggleCollapsed}>
