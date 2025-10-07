@@ -1,5 +1,5 @@
-import { ProfileStoreInitData } from '@/store/ProfileStore';
 import { profileDataInit } from '@/store/models';
+import { ProfileStoreInitData } from '@/store/RootStore/ProfileStore';
 
 const LOCAL_KEY = 'profile';
 

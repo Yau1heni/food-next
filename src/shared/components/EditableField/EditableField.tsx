@@ -3,16 +3,17 @@ import styles from './EditableField.module.scss';
 import Input from '@components/Input';
 import Button from '@components/Button';
 import Text from '@components/Text';
+import { ProfileStoreInitData } from '@/store/RootStore/ProfileStore';
 
 interface EditableFieldProps {
   initialValue: string;
-  onSave?: (value: string) => void;
+  onSave?: <K extends keyof ProfileStoreInitData>(key: K, value: ProfileStoreInitData[K]) => void;
   placeholder?: string;
   inputType?: string;
   isEdit?: boolean;
-  setEditMode: (value: string) => void;
-  removeEdit: (value: string) => void;
-  name: string;
+  setEditMode: (value: keyof ProfileStoreInitData) => void;
+  removeEdit: (value: keyof ProfileStoreInitData) => void;
+  name: keyof ProfileStoreInitData;
 }
 
 export const EditableField: React.FC<EditableFieldProps> = (props) => {
@@ -47,7 +48,7 @@ export const EditableField: React.FC<EditableFieldProps> = (props) => {
     removeEdit(name);
 
     if (onSave && newValue !== initialValue) {
-      onSave(newValue);
+      onSave(name, newValue);
     }
   }, [initialValue, localValue, name, onSave, removeEdit]);
 
@@ -69,8 +70,12 @@ export const EditableField: React.FC<EditableFieldProps> = (props) => {
             className={styles.input}
           />
           <div className={styles.actions}>
-            <Button onClick={handleSave}>Save</Button>
-            <Button onClick={handleCancel}>Cancel</Button>
+            <Button onClick={handleSave} disabled={!localValue.trim()}>
+              Save
+            </Button>
+            <Button onClick={handleCancel} disabled={!localValue.trim()}>
+              Cancel
+            </Button>
           </div>
         </div>
       ) : (
