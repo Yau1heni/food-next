@@ -70,8 +70,12 @@ export const EditableField: React.FC<EditableFieldProps> = (props) => {
             className={styles.input}
           />
           <div className={styles.actions}>
-            <Button onClick={handleSave}>Save</Button>
-            <Button onClick={handleCancel}>Cancel</Button>
+            <Button onClick={handleSave} disabled={!localValue.trim()}>
+              Save
+            </Button>
+            <Button onClick={handleCancel} disabled={!localValue.trim()}>
+              Cancel
+            </Button>
           </div>
         </div>
       ) : (

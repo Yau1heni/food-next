@@ -40,7 +40,7 @@ export default class ProfileStore {
   get canSave() {
     const { name, email, password } = this._profileDraftData;
     return Boolean(
-      (name.trim() || email.trim() || password.trim()) && this._editableFields.size === 0
+      name.trim() && email.trim() && password.trim() && this._editableFields.size === 0
     );
   }
 
