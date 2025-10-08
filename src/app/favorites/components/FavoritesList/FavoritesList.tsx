@@ -1,29 +1,20 @@
 'use client';
 
-import styles from './FavoritesList.module.scss';
 import { useRootStore } from '@/store/RootStore/hooks';
 import { observer } from 'mobx-react-lite';
 import { FavoritesItem } from '../FavoritesItem/FavoritesItem';
 import { useCallback } from 'react';
 import Text from '@components/Text';
-import { useClientPagination } from '@hooks/useClientPagination';
-import { Meta } from '@utils/meta';
-import { PAGINATION_LIMIT } from '@/store/models';
-import Pagination from '@components/Pagination';
+import { InfiniteScrollList } from '@components/InfiniteList';
 
 export const FavoritesList = observer(() => {
-  const store = useRootStore();
-  const favorites = store.favorites;
-
-  const { paginatedData, total, setPage, page } = useClientPagination({
-    data: favorites.list,
-  });
+  const { favorites } = useRootStore();
 
   const onRemove = useCallback(
     (id: number) => {
-      store.favorites.removeFavorite(id);
+      favorites.removeFavorite(id);
     },
-    [store.favorites]
+    [favorites]
   );
 
   if (!favorites) return null;
@@ -33,19 +24,10 @@ export const FavoritesList = observer(() => {
   }
 
   return (
-    <ul className={styles.favoritesList}>
-      {paginatedData.map((el) => (
-        <FavoritesItem
-          key={el.id}
-          id={el.originalRecipeId}
-          item={el.recipe}
-          onRemove={onRemove}
-          isLoading={favorites.loadingById[el.originalRecipeId]}
-        />
-      ))}
-      {favorites.meta !== Meta.error && favorites.list.length > PAGINATION_LIMIT && (
-        <Pagination page={page} onChange={setPage} total={total} />
+    <InfiniteScrollList items={favorites.list} limit={5}>
+      {(el) => (
+        <FavoritesItem key={el.id} id={el.originalRecipeId} item={el.recipe} onRemove={onRemove} />
       )}
-    </ul>
+    </InfiniteScrollList>
   );
 });

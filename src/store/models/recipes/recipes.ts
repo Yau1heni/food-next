@@ -31,4 +31,5 @@ export type GetRecipesArgs = {
   categories: string;
   term?: string;
   isVegetarian?: boolean;
+  rating?: { key: string; value: string }[];
 };

@@ -1,0 +1,24 @@
+@use '@styles/variables.scss' as *;
+
+.profile {
+  display: grid;
+  gap: $space-m;
+  max-width: 480px;
+
+  .avatarRow {
+    display: flex;
+    align-items: center;
+    gap: $space-m;
+  }
+
+  .saveButton {
+    margin-top: $space-xl;
+  }
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}

@@ -1,0 +1,9 @@
+@use '@styles/mixins.scss' as *;
+
+.ratingDropdown {
+  width: 150px;
+
+  @include mobile {
+    width: 100%;
+  }
+}

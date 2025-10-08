@@ -28,5 +28,3 @@ export const useRootStore = () => {
     message: 'RootStoreContext was not provided',
   });
 };
-
-/*export const use*/

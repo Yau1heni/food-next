@@ -8,12 +8,17 @@ import { Burger, HeaderModal } from '@components/Header';
 import Link from 'next/link';
 import LogoIcon from '@components/icons/LogoIcon';
 import { Navigation } from '@components/Navigation';
-import LikeIcon from '@components/icons/LikeIcon';
-import UserIcon from '@components/icons/UserIcon';
 import { routes } from '@config/routes';
+import { useRootStore } from '@/store/RootStore/hooks';
+import { Avatar } from '@components/Avatar';
+import { useClient } from '@hooks/useClient';
+import { observer } from 'mobx-react-lite';
 
-export const Header = () => {
+export const Header = observer(() => {
+  const { profile } = useRootStore();
+
   const [open, setOpen] = useState(false);
+  const { isClient } = useClient();
 
   const onOpen = useCallback(() => {
     setOpen(true);
@@ -38,12 +43,12 @@ export const Header = () => {
             </Link>
             <Navigation />
           </div>
-          <div className={styles.controls}>
-            <LikeIcon />
-            <UserIcon />
-          </div>
+          <Link href={routes.profile.mask} className={styles.controls}>
+            {isClient && <Avatar src={profile.profileData.avatarUrl} alt={'avatar'} size={30} />}
+            <Text>{isClient ? profile.profileData.name : ''}</Text>
+          </Link>
         </div>
       </Container>
     </header>
   );
-};
+});

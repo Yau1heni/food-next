@@ -11,4 +11,8 @@ export const routes = {
     mask: '/favorites',
     create: () => '/favorites',
   },
+  profile: {
+    mask: '/profile',
+    create: () => '/profile',
+  },
 };

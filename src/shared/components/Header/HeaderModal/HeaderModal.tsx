@@ -33,7 +33,7 @@ export const HeaderModal: FC<HeaderModalProps> = (props) => {
       <button className={styles.closeButton} onClick={onClose} aria-label="Close menu">
         &times;
       </button>
-      <Navigation className={styles.navLinks} />
+      <Navigation className={styles.navLinks} onCloseNodal={onClose} />
     </div>
   );
 };

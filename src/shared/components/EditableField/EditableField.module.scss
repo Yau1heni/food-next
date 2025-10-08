@@ -1,0 +1,28 @@
+@use '@styles/variables.scss' as *;
+
+.editableField {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+
+  .editMode {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+  }
+
+  .editContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $space-s;
+
+    .actions {
+      display: flex;
+      gap: 4px;
+    }
+  }
+}

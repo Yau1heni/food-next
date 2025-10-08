@@ -6,6 +6,8 @@ import { RootStoreProvider } from '@/store/RootStore/hooks';
 import { ReactNode, Suspense } from 'react';
 import FavoritesStore from '@/store/RootStore/FavoritesStore';
 import Loader from '@components/Loader';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const roboto = Roboto({
   variable: '--font-family',
@@ -29,6 +31,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <Suspense fallback={<Loader />}>
           <RootStoreProvider initData={{ favorites: favoritesData }}>
             <Layout>{children}</Layout>
+            <ToastContainer position="bottom-left" autoClose={3000} pauseOnHover />
           </RootStoreProvider>
         </Suspense>
       </body>

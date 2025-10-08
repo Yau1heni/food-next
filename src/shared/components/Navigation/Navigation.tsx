@@ -9,15 +9,16 @@ import { usePathname } from 'next/navigation';
 
 export type NavigationProps = {
   className?: string;
+  onCloseNodal?: () => void;
 };
 
-export const Navigation: FC<NavigationProps> = ({ className }) => {
+export const Navigation: FC<NavigationProps> = ({ className, onCloseNodal }) => {
   const pathname = usePathname();
 
   const finallyClassName = cn(styles.navigation, className);
 
   const navList = navigationConfig.map(({ title, to }, i) => (
-    <Link href={to} key={i}>
+    <Link href={to} key={i} onClick={onCloseNodal}>
       <Text color={pathname === to ? 'accent' : 'primary'} view={'p-16'}>
         {title}
       </Text>
