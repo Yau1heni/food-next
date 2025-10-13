@@ -41,9 +41,13 @@ export default class CategoriesStore {
   }
 
   static async getCategories() {
-    const response = await categoriesApi.getCategories();
+    try {
+      const res = await categoriesApi.getCategories();
 
-    return { data: response };
+      return { data: res };
+    } catch (err) {
+      return { data: [] };
+    }
   }
 
   static fromJson(data: CategoriesPageStoreInitData) {

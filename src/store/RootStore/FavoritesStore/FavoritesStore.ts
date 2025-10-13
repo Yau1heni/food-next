@@ -72,9 +72,13 @@ export default class FavoritesStore {
   }
 
   static async fetchFavoritesData(): Promise<FavoritesPageStoreInitData> {
-    const res = await favoritesApi.getFavorites();
+    try {
+      const res = await favoritesApi.getFavorites();
 
-    return { data: res, meta: Meta.success };
+      return { data: res, meta: Meta.success };
+    } catch (err) {
+      return { data: [], meta: Meta.error };
+    }
   }
 
   async removeFavorite(id: number) {

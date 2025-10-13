@@ -95,7 +95,11 @@ export default class RecipesStore {
       rating: searchParams.rating ? JSON.parse(searchParams.rating) : '',
     };
 
-    return await recipesApi.getRecipes(payload);
+    try {
+      return await recipesApi.getRecipes(payload);
+    } catch (err) {
+      return { data: [], meta: { pagination: getInitialPaginationModel() } };
+    }
   }
 
   async load(payload: GetRecipesArgs) {
