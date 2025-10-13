@@ -8,7 +8,7 @@ import { IngredientsSection } from '@/app/recipe/[id]/components/IngredientsSect
 import { DirectionsSection } from '@/app/recipe/[id]/components/DirectionsSection';
 import { PageTitle } from '@components/PageTitle';
 import { Container } from '@components/Container';
-import { useRecipeStore } from '@/store/RecipeStore/RecipePageStoreProvider';
+import { useRecipeStore } from '@/store/RecipeStore';
 import { observer } from 'mobx-react-lite';
 import Button from '@components/Button';
 import styles from './RecipePage.module.scss';
@@ -16,9 +16,8 @@ import { useRootStore } from '@/store/RootStore/hooks';
 import { useCallback } from 'react';
 
 export const RecipePage = observer(() => {
-  const store = useRecipeStore();
-  const recipe = store.currentRecipe;
-  const favoritesStore = useRootStore().favorites;
+  const { currentRecipe: recipe } = useRecipeStore();
+  const { favorites: favoritesStore } = useRootStore();
 
   if (recipe === null) return null;
 
@@ -47,7 +46,7 @@ export const RecipePage = observer(() => {
         <DirectionsSection directions={recipe.directions} />
         <div className={styles.button}>
           <Button loading={isLoading} onClick={isFavorite ? removeFromFavorites : addToFavorite}>
-            {isFavorite ? 'Add to favorites' : 'Remove from favorites'}
+            {isFavorite ? 'Remove from favorites' : 'Add to favorites'}
           </Button>
         </div>
       </Container>
